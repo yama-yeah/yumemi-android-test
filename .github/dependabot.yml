@@ -10,3 +10,4 @@ updates:
     schedule:
       interval: "daily"
       timezone: "Asia/Tokyo"
+    target-branch: "develop"
