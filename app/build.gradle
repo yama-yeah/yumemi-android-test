@@ -6,30 +6,6 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
-configurations {
-    ktlint
-}
-
-task ktlint(type: JavaExec, group: "verification") {
-    description = "Check Kotlin code style."
-    mainClass.set("com.pinterest.ktlint.Main")
-    classpath = configurations.ktlint
-    args "src/**/*.kt", "--color", "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
-}
-
-check.dependsOn ktlint
-
-task ktlintFormat(type: JavaExec, group: "formatting") {
-    description = "Fix Kotlin code style deviations."
-    mainClass.set("com.pinterest.ktlint.Main")
-    classpath = configurations.ktlint
-    args "-F", "src/**/*.kt"
-}
-
-dependencies {
-    ktlint "com.pinterest:ktlint:0.50.0"
-}
-
 android {
     namespace 'jp.co.yumemi.android.code_check'
     compileSdk 33
