@@ -91,3 +91,6 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+
+# Trash files dependent on local environment
+.python-version
