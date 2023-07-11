@@ -31,9 +31,12 @@ class TwoFragment : Fragment(R.layout.fragment_two) {
         _binding.ownerIconView.load(item.ownerIconUrl)
         _binding.nameView.text = item.name
         _binding.languageView.text = getString(R.string.repo_written_language, item.language)
-        _binding.starsView.text = getString(R.string.repo_stars_cnt, item.stargazersCount.toString())
-        _binding.watchersView.text = getString(R.string.repo_watchers_cnt, item.watchersCount.toString())
+        _binding.starsView.text =
+            getString(R.string.repo_stars_cnt, item.stargazersCount.toString())
+        _binding.watchersView.text =
+            getString(R.string.repo_watchers_cnt, item.watchersCount.toString())
         _binding.forksView.text = getString(R.string.repo_forks_cnt, item.forksCount.toString())
-        _binding.openIssuesView.text = getString(R.string.repo_open_issues_cnt, item.openIssuesCount.toString())
+        _binding.openIssuesView.text =
+            getString(R.string.repo_open_issues_cnt, item.openIssuesCount.toString())
     }
 }
