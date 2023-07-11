@@ -61,7 +61,7 @@ class OneViewModel(
                     Item(
                         name = name,
                         ownerIconUrl = ownerIconUrl,
-                        language = context.getString(R.string.written_language, language),
+                        language = language,
                         stargazersCount = stargazersCount,
                         watchersCount = watchersCount,
                         forksCount = forksCount,
