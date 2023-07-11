@@ -25,24 +25,28 @@ import java.util.Date
  */
 class OneViewModel : ViewModel() {
 
-    // 検索結果
+    /**
+     * 検索結果を返す
+     * @param inputText リポジトリ名
+     */
     fun searchResults(inputText: String): List<Item> = runBlocking {
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
+            // 検索結果をApiから取得（json形式）
             val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
                 parameter("q", inputText)
             }
 
             val jsonBody = JSONObject(response.body<String>())
-
+            // jsonからリポジトリたちを取得
             val jsonItems = jsonBody.optJSONArray("items")!!
 
             val items = mutableListOf<Item>()
 
             /**
-             * アイテムの個数分ループする
+             * リポジトリたちから一個ずつ情報を取得して、itemsにItemとして追加していく
              */
             for (i in 0 until jsonItems.length()) {
                 val jsonItem = jsonItems.optJSONObject(i)!!
@@ -66,7 +70,7 @@ class OneViewModel : ViewModel() {
                     )
                 )
             }
-
+            // 検索した日時を保存
             lastSearchDate = Date()
 
             return@async items.toList()
@@ -74,6 +78,9 @@ class OneViewModel : ViewModel() {
     }
 }
 
+/**
+ * リポジトリを表すデータクラス
+ */
 @Parcelize
 data class Item(
     val name: String,
