@@ -18,6 +18,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
 
+/**
+ * 検索画面かつホーム画面
+ * リストタイルをタップすると、リポジトリ詳細画面に遷移する
+ */
 class OneFragment : Fragment(R.layout.fragment_one) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,15 +34,20 @@ class OneFragment : Fragment(R.layout.fragment_one) {
         val layoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), layoutManager.orientation)
+        // アダプターを作成する
         val adapter = CustomAdapter(object : CustomAdapter.OnItemClickListener {
+            // リストタイルをタップしたときの処理
             override fun itemClick(item: Item) {
+                // リポジトリ詳細画面に遷移する
                 gotoRepositoryFragment(item)
             }
         })
-
+        // 検索ボタンを押したときの処理
         binding.searchInputText
             .setOnEditorActionListener { editText, action, _ ->
+                // キーボードの検索ボタンが押されたとき
                 if (action == EditorInfo.IME_ACTION_SEARCH) {
+                    // アダプタに検索結果をセットする
                     editText.text.toString().let {
                         viewModel.searchResults(it).apply {
                             adapter.submitList(this)
@@ -48,7 +57,6 @@ class OneFragment : Fragment(R.layout.fragment_one) {
                 }
                 return@setOnEditorActionListener false
             }
-
         binding.recyclerView.also {
             it.layoutManager = layoutManager
             it.addItemDecoration(dividerItemDecoration)
@@ -56,6 +64,10 @@ class OneFragment : Fragment(R.layout.fragment_one) {
         }
     }
 
+    /**
+     * リポジトリ詳細画面に遷移する
+     * @param item リポジトリの情報
+     */
     fun gotoRepositoryFragment(item: Item) {
         val action = OneFragmentDirections
             .actionRepositoriesFragmentToRepositoryFragment(item = item)
@@ -74,12 +86,19 @@ val diff_util = object : DiffUtil.ItemCallback<Item>() {
 
 }
 
+/**
+ * リポジトリのリストを表示するためのアダプター
+ * @param itemClickListener リポジトリのリストをタップしたときのコールバック
+ */
 class CustomAdapter(
     private val itemClickListener: OnItemClickListener,
 ) : ListAdapter<Item, CustomAdapter.ViewHolder>(diff_util) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
+    /**
+     * リポジトリのリストをタップしたときのコールバックのインターフェース
+     */
     interface OnItemClickListener {
         fun itemClick(item: Item)
     }
@@ -94,7 +113,7 @@ class CustomAdapter(
         val item = getItem(position)
         (holder.itemView.findViewById<View>(R.id.repositoryNameView) as TextView).text =
             item.name
-
+        // リポジトリのリストをタップしたときのコールバック
         holder.itemView.setOnClickListener {
             itemClickListener.itemClick(item)
         }
