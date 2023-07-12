@@ -35,20 +35,17 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
             gotoDetailScreen(it)
         }
         // 検索ボタンを押したときの処理
-        binding.searchInputText
-            .setOnEditorActionListener { editText, action, _ ->
-                // キーボードの検索ボタンが押されたとき
-                if (action == EditorInfo.IME_ACTION_SEARCH) {
-                    // アダプタに検索結果をセットする
-                    editText.text.toString().let {
-                        viewModel.searchResults(it).apply {
-                            adapter.submitList(this)
-                        }
-                    }
-                    return@setOnEditorActionListener true
+        binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
+            // キーボードの検索ボタンが押されたとき
+            if (action == EditorInfo.IME_ACTION_SEARCH) {
+                // アダプタに検索結果をセットする
+                viewModel.searchResults(editText.text.toString()).apply {
+                    adapter.submitList(this)
                 }
-                return@setOnEditorActionListener false
+                return@setOnEditorActionListener true
             }
+            return@setOnEditorActionListener false
+        }
         binding.recyclerView.also {
             it.layoutManager = layoutManager
             it.addItemDecoration(dividerItemDecoration)
