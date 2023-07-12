@@ -20,7 +20,7 @@ import java.util.Date
  */
 class SearchScreenViewModel : ViewModel() {
     private val _repositoriesStateFlow = MutableStateFlow<List<RepositoryDataModel>>(
-        mutableListOf()
+        emptyList()
     )
     val repositoriesStateFlow get() = _repositoriesStateFlow.asStateFlow()
 
