@@ -13,7 +13,7 @@ import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
@@ -35,7 +35,7 @@ class SearchScreenViewModel : ViewModel() {
     fun searchResults(inputText: String): Unit = runBlocking {
         val client = HttpClient(Android)
 
-        GlobalScope.async {
+        CoroutineScope(coroutineContext).async {
             // 検索結果をApiから取得（json形式）
             val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
