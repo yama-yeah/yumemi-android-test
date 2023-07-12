@@ -11,15 +11,14 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.code_check.TwoFragmentArgs
 import jp.co.yumemi.android.code_check.databinding.FragmentTwoBinding
 
 /**
  * リポジトリ詳細画面
  */
-class TwoFragment : Fragment(R.layout.fragment_two) {
+class DetailScreenFragment : Fragment(R.layout.fragment_two) {
 
-    private val args: TwoFragmentArgs by navArgs()
+    private val args: DetailScreenFragmentArgs by navArgs()
 
     private var binding: FragmentTwoBinding? = null
     private val _binding get() = binding!!

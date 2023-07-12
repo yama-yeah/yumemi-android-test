@@ -20,9 +20,9 @@ import org.json.JSONObject
 import java.util.Date
 
 /**
- * OneFragmentのViewModel
+ * 検索画面のViewModel
  */
-class OneViewModel : ViewModel() {
+class SearchScreenViewModel : ViewModel() {
 
     /**
      * 検索結果を返す
