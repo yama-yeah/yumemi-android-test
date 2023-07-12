@@ -36,9 +36,8 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
         }
         // 検索ボタンを押したときの処理
         binding.searchInputText.setOnSearchActionListener {
-            viewModel.searchResults(it.text.toString()).apply {
-                adapter.submitList(this)
-            }
+            viewModel.searchResults(it.text.toString())
+            adapter.submitList(viewModel.repositories.value)
         }
         binding.recyclerView.also {
             it.layoutManager = layoutManager

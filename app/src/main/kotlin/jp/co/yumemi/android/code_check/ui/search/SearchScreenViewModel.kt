@@ -15,6 +15,7 @@ import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.util.Date
@@ -23,15 +24,18 @@ import java.util.Date
  * 検索画面のViewModel
  */
 class SearchScreenViewModel : ViewModel() {
+    val repositories = MutableStateFlow<MutableList<RepositoryDataModel>>(
+        mutableListOf()
+    )
 
     /**
      * 検索結果を返す
      * @param inputText リポジトリ名
      */
-    fun searchResults(inputText: String): List<RepositoryDataModel> = runBlocking {
+    fun searchResults(inputText: String): Unit = runBlocking {
         val client = HttpClient(Android)
 
-        return@runBlocking GlobalScope.async {
+        GlobalScope.async {
             // 検索結果をApiから取得（json形式）
             val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
@@ -42,11 +46,12 @@ class SearchScreenViewModel : ViewModel() {
             // jsonからリポジトリたちを取得
             val jsonRepositories = jsonBody.optJSONArray("items")
 
-            val repositories = mutableListOf<RepositoryDataModel>()
+            repositories.value = mutableListOf()
 
             // 検索結果がない場合は空のリストを返す
+            // Toastか何か出さないと検索終わったかわかりにくい
             if (jsonRepositories == null || jsonRepositories.length() == 0) {
-                return@async repositories.toList()
+                return@async
             }
 
             /**
@@ -55,12 +60,10 @@ class SearchScreenViewModel : ViewModel() {
             for (i in 0 until jsonRepositories.length()) {
                 val jsonRepository = jsonRepositories.optJSONObject(i)!!
 
-                repositories.add(RepositoryDataModel.fromJson(jsonRepository))
+                repositories.value.add(RepositoryDataModel.fromJson(jsonRepository))
             }
             // 検索した日時を保存
             lastSearchDate = Date()
-
-            return@async repositories.toList()
         }.await()
     }
 }
