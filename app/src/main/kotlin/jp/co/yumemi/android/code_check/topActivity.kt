@@ -4,15 +4,11 @@
 package jp.co.yumemi.android.code_check
 
 import androidx.appcompat.app.AppCompatActivity
-import java.util.Date
+import java.util.*
 
-/**
- * ここからアプリは実行される
- */
 class TopActivity : AppCompatActivity(R.layout.activity_top) {
 
     companion object {
-        // 検索した日時
         lateinit var lastSearchDate: Date
     }
 }

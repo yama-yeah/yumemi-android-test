@@ -1,51 +1,49 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check.ui.search
+package jp.co.yumemi.android.code_check
 
+import android.content.Context
+import android.os.Parcelable
 import androidx.lifecycle.ViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.engine.android.Android
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.parameter
-import io.ktor.client.statement.HttpResponse
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
-import java.util.Date
+import java.util.*
 
 /**
- * 検索画面のViewModel
+ * TwoFragment で使う
  */
-class SearchScreenViewModel : ViewModel() {
+class OneViewModel(
+    val context: Context
+) : ViewModel() {
 
-    /**
-     * 検索結果を返す
-     * @param inputText リポジトリ名
-     */
-    fun searchResults(inputText: String): List<RepositoryDataModel> = runBlocking {
+    // 検索結果
+    fun searchResults(inputText: String): List<item> = runBlocking {
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
-            // 検索結果をApiから取得（json形式）
             val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
                 parameter("q", inputText)
             }
 
             val jsonBody = JSONObject(response.body<String>())
-            // jsonからリポジトリたちを取得
+
             val jsonItems = jsonBody.optJSONArray("items")!!
 
-            val items = mutableListOf<RepositoryDataModel>()
+            val items = mutableListOf<item>()
 
             /**
-             * リポジトリたちから一個ずつ情報を取得して、itemsにItemとして追加していく
+             * アイテムの個数分ループする
              */
             for (i in 0 until jsonItems.length()) {
                 val jsonItem = jsonItems.optJSONObject(i)!!
@@ -54,14 +52,14 @@ class SearchScreenViewModel : ViewModel() {
                 val language = jsonItem.optString("language")
                 val stargazersCount = jsonItem.optLong("stargazers_count")
                 val watchersCount = jsonItem.optLong("watchers_count")
-                val forksCount = jsonItem.optLong("forks_count")
+                val forksCount = jsonItem.optLong("forks_conut")
                 val openIssuesCount = jsonItem.optLong("open_issues_count")
 
                 items.add(
-                    RepositoryDataModel(
+                    item(
                         name = name,
                         ownerIconUrl = ownerIconUrl,
-                        language = language,
+                        language = context.getString(R.string.written_language, language),
                         stargazersCount = stargazersCount,
                         watchersCount = watchersCount,
                         forksCount = forksCount,
@@ -69,10 +67,21 @@ class SearchScreenViewModel : ViewModel() {
                     )
                 )
             }
-            // 検索した日時を保存
+
             lastSearchDate = Date()
 
             return@async items.toList()
         }.await()
     }
 }
+
+@Parcelize
+data class item(
+    val name: String,
+    val ownerIconUrl: String,
+    val language: String,
+    val stargazersCount: Long,
+    val watchersCount: Long,
+    val forksCount: Long,
+    val openIssuesCount: Long,
+) : Parcelable
