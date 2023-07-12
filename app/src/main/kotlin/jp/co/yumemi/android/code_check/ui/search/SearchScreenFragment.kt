@@ -5,7 +5,6 @@ package jp.co.yumemi.android.code_check.ui.search
 
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentSearchScreenBinding
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.code_check.util.setOnSearchActionListener
 
 /**
  * 検索画面かつホーム画面
@@ -35,16 +35,10 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
             gotoDetailScreen(it)
         }
         // 検索ボタンを押したときの処理
-        binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
-            // キーボードの検索ボタンが押されたとき
-            if (action == EditorInfo.IME_ACTION_SEARCH) {
-                // アダプタに検索結果をセットする
-                viewModel.searchResults(editText.text.toString()).apply {
-                    adapter.submitList(this)
-                }
-                return@setOnEditorActionListener true
+        binding.searchInputText.setOnSearchActionListener {
+            viewModel.searchResults(it.text.toString()).apply {
+                adapter.submitList(this)
             }
-            return@setOnEditorActionListener false
         }
         binding.recyclerView.also {
             it.layoutManager = layoutManager
