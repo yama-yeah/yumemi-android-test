@@ -1,9 +1,8 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.ui.search
 
-import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -13,15 +12,15 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
 import java.util.Date
 
 /**
- * TwoFragment で使う
+ * OneFragmentのViewModel
  */
 class OneViewModel : ViewModel() {
 
@@ -29,7 +28,7 @@ class OneViewModel : ViewModel() {
      * 検索結果を返す
      * @param inputText リポジトリ名
      */
-    fun searchResults(inputText: String): List<Item> = runBlocking {
+    fun searchResults(inputText: String): List<RepositoryDataModel> = runBlocking {
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
@@ -43,7 +42,7 @@ class OneViewModel : ViewModel() {
             // jsonからリポジトリたちを取得
             val jsonItems = jsonBody.optJSONArray("items")!!
 
-            val items = mutableListOf<Item>()
+            val items = mutableListOf<RepositoryDataModel>()
 
             /**
              * リポジトリたちから一個ずつ情報を取得して、itemsにItemとして追加していく
@@ -59,7 +58,7 @@ class OneViewModel : ViewModel() {
                 val openIssuesCount = jsonItem.optLong("open_issues_count")
 
                 items.add(
-                    Item(
+                    RepositoryDataModel(
                         name = name,
                         ownerIconUrl = ownerIconUrl,
                         language = language,
@@ -77,17 +76,3 @@ class OneViewModel : ViewModel() {
         }.await()
     }
 }
-
-/**
- * リポジトリを表すデータクラス
- */
-@Parcelize
-data class Item(
-    val name: String,
-    val ownerIconUrl: String,
-    val language: String,
-    val stargazersCount: Long,
-    val watchersCount: Long,
-    val forksCount: Long,
-    val openIssuesCount: Long,
-) : Parcelable

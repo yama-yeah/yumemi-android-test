@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.ui.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import jp.co.yumemi.android.code_check.OneFragmentDirections
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
+import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
 
 /**
  * 検索画面かつホーム画面
@@ -37,7 +40,7 @@ class OneFragment : Fragment(R.layout.fragment_one) {
         // アダプターを作成する
         val adapter = CustomAdapter(object : CustomAdapter.OnItemClickListener {
             // リストタイルをタップしたときの処理
-            override fun itemClick(item: Item) {
+            override fun itemClick(item: RepositoryDataModel) {
                 // リポジトリ詳細画面に遷移する
                 gotoRepositoryFragment(item)
             }
@@ -68,19 +71,25 @@ class OneFragment : Fragment(R.layout.fragment_one) {
      * リポジトリ詳細画面に遷移する
      * @param item リポジトリの情報
      */
-    fun gotoRepositoryFragment(item: Item) {
-        val action = OneFragmentDirections
-            .actionRepositoriesFragmentToRepositoryFragment(item = item)
+    fun gotoRepositoryFragment(item: RepositoryDataModel) {
+        val action =
+            OneFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
         findNavController().navigate(action)
     }
 }
 
-val diff_util = object : DiffUtil.ItemCallback<Item>() {
-    override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+val diff_util = object : DiffUtil.ItemCallback<RepositoryDataModel>() {
+    override fun areItemsTheSame(
+        oldItem: RepositoryDataModel,
+        newItem: RepositoryDataModel
+    ): Boolean {
         return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+    override fun areContentsTheSame(
+        oldItem: RepositoryDataModel,
+        newItem: RepositoryDataModel
+    ): Boolean {
         return oldItem == newItem
     }
 
@@ -92,7 +101,7 @@ val diff_util = object : DiffUtil.ItemCallback<Item>() {
  */
 class CustomAdapter(
     private val itemClickListener: OnItemClickListener,
-) : ListAdapter<Item, CustomAdapter.ViewHolder>(diff_util) {
+) : ListAdapter<RepositoryDataModel, CustomAdapter.ViewHolder>(diff_util) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -100,7 +109,7 @@ class CustomAdapter(
      * リポジトリのリストをタップしたときのコールバックのインターフェース
      */
     interface OnItemClickListener {
-        fun itemClick(item: Item)
+        fun itemClick(item: RepositoryDataModel)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
