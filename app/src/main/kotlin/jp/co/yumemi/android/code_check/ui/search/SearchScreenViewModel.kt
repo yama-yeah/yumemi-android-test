@@ -4,20 +4,14 @@
 package jp.co.yumemi.android.code_check.ui.search
 
 import androidx.lifecycle.ViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.engine.android.Android
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.parameter
-import io.ktor.client.statement.HttpResponse
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.code_check.domain.services.github.GithubApi
+import jp.co.yumemi.android.code_check.domain.services.github.IGitHubApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
-import org.json.JSONObject
 import java.util.Date
 
 /**
@@ -33,18 +27,11 @@ class SearchScreenViewModel : ViewModel() {
      * @param inputText リポジトリ名
      */
     fun searchResults(inputText: String): Unit = runBlocking {
-        val client = HttpClient(Android)
+        val githubApi: IGitHubApi = GithubApi()
 
         CoroutineScope(coroutineContext).async {
-            // 検索結果をApiから取得（json形式）
-            val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
-                header("Accept", "application/vnd.github.v3+json")
-                parameter("q", inputText)
-            }
-
-            val jsonBody = JSONObject(response.body<String>())
-            // jsonからリポジトリたちを取得
-            val jsonRepositories = jsonBody.optJSONArray("items")
+            // GitHubのAPIからリポジトリの情報のJSONを取得する
+            val jsonRepositories = githubApi.getRepositoriesJson(inputText)
 
             repositories.value = mutableListOf()
 
