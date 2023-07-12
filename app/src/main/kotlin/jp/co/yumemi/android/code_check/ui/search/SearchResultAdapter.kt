@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.code_check.domain.model.repositoryDiffUtil
 
 
 /**
@@ -16,7 +17,7 @@ import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
  */
 class SearchResultAdapter(
     private val itemClickListener: OnItemClickListener,
-) : ListAdapter<RepositoryDataModel, SearchResultAdapter.ViewHolder>(diff_util) {
+) : ListAdapter<RepositoryDataModel, SearchResultAdapter.ViewHolder>(repositoryDiffUtil) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
