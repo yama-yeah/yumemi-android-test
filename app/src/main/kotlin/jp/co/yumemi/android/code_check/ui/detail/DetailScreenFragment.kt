@@ -11,16 +11,16 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.code_check.databinding.FragmentTwoBinding
+import jp.co.yumemi.android.code_check.databinding.FragmentDetailScreenBinding
 
 /**
  * リポジトリ詳細画面
  */
-class DetailScreenFragment : Fragment(R.layout.fragment_two) {
+class DetailScreenFragment : Fragment(R.layout.fragment_detail_screen) {
 
     private val args: DetailScreenFragmentArgs by navArgs()
 
-    private var binding: FragmentTwoBinding? = null
+    private var binding: FragmentDetailScreenBinding? = null
     private val _binding get() = binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,7 +28,7 @@ class DetailScreenFragment : Fragment(R.layout.fragment_two) {
 
         Log.d("検索した日時", lastSearchDate.toString())
 
-        binding = FragmentTwoBinding.bind(view)
+        binding = FragmentDetailScreenBinding.bind(view)
 
         val item = args.item
         // 画面にリポジトリの情報を表示する

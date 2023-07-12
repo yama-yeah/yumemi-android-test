@@ -17,19 +17,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
+import jp.co.yumemi.android.code_check.databinding.FragmentSearchScreenBinding
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
 
 /**
  * 検索画面かつホーム画面
  * リストタイルをタップすると、リポジトリ詳細画面に遷移する
  */
-class SearchScreenFragment : Fragment(R.layout.fragment_one) {
+class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentOneBinding.bind(view)
+        val binding = FragmentSearchScreenBinding.bind(view)
 
         val viewModel = SearchScreenViewModel()
 
@@ -113,7 +113,7 @@ class SearchResultAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_item, parent, false)
+            .inflate(R.layout.layout_repository, parent, false)
         return ViewHolder(view)
     }
 
