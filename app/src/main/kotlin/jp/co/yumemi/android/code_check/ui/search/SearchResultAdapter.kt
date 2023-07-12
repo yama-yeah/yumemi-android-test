@@ -13,20 +13,13 @@ import jp.co.yumemi.android.code_check.domain.model.repositoryDiffUtil
 
 /**
  * 検索して出てきたリポジトリのリストを表示するためのアダプター
- * @param itemClickListener リポジトリのリストをタップしたときのコールバック
+ * リストをタップすると、リポジトリ詳細画面に遷移する
  */
 class SearchResultAdapter(
-    private val itemClickListener: OnItemClickListener,
+    private val onClicked: (RepositoryDataModel) -> Unit,
 ) : ListAdapter<RepositoryDataModel, SearchResultAdapter.ViewHolder>(repositoryDiffUtil) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-    /**
-     * リポジトリのリストをタップしたときのコールバックのインターフェース
-     */
-    interface OnItemClickListener {
-        fun itemClick(item: RepositoryDataModel)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -35,12 +28,9 @@ class SearchResultAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
+        val repository = getItem(position)
         (holder.itemView.findViewById<View>(R.id.repositoryNameView) as TextView).text =
-            item.name
-        // リポジトリのリストをタップしたときのコールバック
-        holder.itemView.setOnClickListener {
-            itemClickListener.itemClick(item)
-        }
+            repository.name
+        onClicked(repository)
     }
 }

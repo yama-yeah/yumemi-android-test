@@ -31,13 +31,9 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), layoutManager.orientation)
         // アダプターを作成する
-        val adapter = SearchResultAdapter(object : SearchResultAdapter.OnItemClickListener {
-            // リストタイルをタップしたときの処理
-            override fun itemClick(item: RepositoryDataModel) {
-                // リポジトリ詳細画面に遷移する
-                gotoRepositoryFragment(item)
-            }
-        })
+        val adapter = SearchResultAdapter {
+            gotoDetailScreen(it)
+        }
         // 検索ボタンを押したときの処理
         binding.searchInputText
             .setOnEditorActionListener { editText, action, _ ->
@@ -62,11 +58,11 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
 
     /**
      * リポジトリ詳細画面に遷移する
-     * @param item リポジトリの情報
+     * @param repository 選択したリポジトリ
      */
-    fun gotoRepositoryFragment(item: RepositoryDataModel) {
+    private fun gotoDetailScreen(repository: RepositoryDataModel) {
         val action =
-            SearchScreenFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
+            SearchScreenFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = repository)
         findNavController().navigate(action)
     }
 }
