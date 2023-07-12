@@ -31,6 +31,8 @@ class SearchResultAdapter(
         val repository = getItem(position)
         (holder.itemView.findViewById<View>(R.id.repositoryNameView) as TextView).text =
             repository.name
-        onClicked(repository)
+        holder.itemView.setOnClickListener {
+            onClicked(repository)
+        }
     }
 }

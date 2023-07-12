@@ -59,7 +59,7 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
      */
     private fun gotoDetailScreen(repository: RepositoryDataModel) {
         val action =
-            SearchScreenFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = repository)
+            SearchScreenFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(repository)
         findNavController().navigate(action)
     }
 }
