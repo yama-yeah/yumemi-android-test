@@ -5,7 +5,6 @@ package jp.co.yumemi.android.code_check.ui.search
 
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentSearchScreenBinding
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.code_check.util.setOnSearchActionListener
 
 /**
  * 検索画面かつホーム画面
@@ -31,28 +31,15 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), layoutManager.orientation)
         // アダプターを作成する
-        val adapter = SearchResultAdapter(object : SearchResultAdapter.OnItemClickListener {
-            // リストタイルをタップしたときの処理
-            override fun itemClick(item: RepositoryDataModel) {
-                // リポジトリ詳細画面に遷移する
-                gotoRepositoryFragment(item)
-            }
-        })
+        val adapter = SearchResultAdapter {
+            gotoDetailScreen(it)
+        }
         // 検索ボタンを押したときの処理
-        binding.searchInputText
-            .setOnEditorActionListener { editText, action, _ ->
-                // キーボードの検索ボタンが押されたとき
-                if (action == EditorInfo.IME_ACTION_SEARCH) {
-                    // アダプタに検索結果をセットする
-                    editText.text.toString().let {
-                        viewModel.searchResults(it).apply {
-                            adapter.submitList(this)
-                        }
-                    }
-                    return@setOnEditorActionListener true
-                }
-                return@setOnEditorActionListener false
+        binding.searchInputText.setOnSearchActionListener {
+            viewModel.searchResults(it.text.toString()).apply {
+                adapter.submitList(this)
             }
+        }
         binding.recyclerView.also {
             it.layoutManager = layoutManager
             it.addItemDecoration(dividerItemDecoration)
@@ -62,11 +49,11 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
 
     /**
      * リポジトリ詳細画面に遷移する
-     * @param item リポジトリの情報
+     * @param repository 選択したリポジトリ
      */
-    fun gotoRepositoryFragment(item: RepositoryDataModel) {
+    private fun gotoDetailScreen(repository: RepositoryDataModel) {
         val action =
-            SearchScreenFragmentDirections.actionSearchToDetail(item = item)
+            SearchScreenFragmentDirections.actionSearchToDetail(repository)
         findNavController().navigate(action)
     }
 }
