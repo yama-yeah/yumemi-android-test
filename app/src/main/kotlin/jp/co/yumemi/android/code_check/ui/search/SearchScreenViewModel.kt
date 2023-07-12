@@ -40,10 +40,14 @@ class SearchScreenViewModel : ViewModel() {
 
             val jsonBody = JSONObject(response.body<String>())
             // jsonからリポジトリたちを取得
-            val jsonRepositories = jsonBody.optJSONArray("items")!!
+            val jsonRepositories = jsonBody.optJSONArray("items")
 
             val repositories = mutableListOf<RepositoryDataModel>()
 
+            // 検索結果がない場合は空のリストを返す
+            if (jsonRepositories == null || jsonRepositories.length() == 0) {
+                return@async repositories.toList()
+            }
 
             /**
              * リポジトリたちから一個ずつ情報を取得して、itemsにItemとして追加していく
