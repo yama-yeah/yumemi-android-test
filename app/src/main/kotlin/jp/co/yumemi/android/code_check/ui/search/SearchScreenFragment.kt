@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentSearchScreenBinding
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.code_check.util.autoCleared
 import jp.co.yumemi.android.code_check.util.setOnSearchActionListener
 
 /**
@@ -27,10 +28,11 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
         gotoDetailScreen(it)
     }
 
+    private var binding by autoCleared<FragmentSearchScreenBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentSearchScreenBinding.bind(view)
+        binding = FragmentSearchScreenBinding.bind(view)
 
         val repositoriesFlow = viewModel.repositoriesStateFlow
         // アダプターのリストを初期化

@@ -12,6 +12,7 @@ import coil.load
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.FragmentDetailScreenBinding
+import jp.co.yumemi.android.code_check.util.autoCleared
 
 /**
  * リポジトリ詳細画面
@@ -20,8 +21,7 @@ class DetailScreenFragment : Fragment(R.layout.fragment_detail_screen) {
 
     private val args: DetailScreenFragmentArgs by navArgs()
 
-    private var binding: FragmentDetailScreenBinding? = null
-    private val _binding get() = binding!!
+    private var binding by autoCleared<FragmentDetailScreenBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,15 +32,15 @@ class DetailScreenFragment : Fragment(R.layout.fragment_detail_screen) {
 
         val item = args.item
         // 画面にリポジトリの情報を表示する
-        _binding.ownerIconView.load(item.ownerIconUrl)
-        _binding.nameView.text = item.name
-        _binding.languageView.text = getString(R.string.repo_written_language, item.language)
-        _binding.starsView.text =
+        binding.ownerIconView.load(item.ownerIconUrl)
+        binding.nameView.text = item.name
+        binding.languageView.text = getString(R.string.repo_written_language, item.language)
+        binding.starsView.text =
             getString(R.string.repo_stars_cnt, item.stargazersCount.toString())
-        _binding.watchersView.text =
+        binding.watchersView.text =
             getString(R.string.repo_watchers_cnt, item.watchersCount.toString())
-        _binding.forksView.text = getString(R.string.repo_forks_cnt, item.forksCount.toString())
-        _binding.openIssuesView.text =
+        binding.forksView.text = getString(R.string.repo_forks_cnt, item.forksCount.toString())
+        binding.openIssuesView.text =
             getString(R.string.repo_open_issues_cnt, item.openIssuesCount.toString())
     }
 }
