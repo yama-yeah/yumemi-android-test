@@ -1,13 +1,13 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check.ui.search
+package jp.co.yumemi.android.codecheck.ui.search
 
 import androidx.lifecycle.ViewModel
-import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
-import jp.co.yumemi.android.code_check.domain.services.github.GitHubApi
-import jp.co.yumemi.android.code_check.domain.services.github.GithubApiImpl
+import jp.co.yumemi.android.codecheck.TopActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.codecheck.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApi
+import jp.co.yumemi.android.codecheck.domain.services.github.GithubApiImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow

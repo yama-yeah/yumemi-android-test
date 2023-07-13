@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check.ui.search
+package jp.co.yumemi.android.codecheck.ui.search
 
 import android.os.Bundle
 import android.view.View
@@ -10,11 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.databinding.FragmentSearchScreenBinding
-import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
-import jp.co.yumemi.android.code_check.util.autoCleared
-import jp.co.yumemi.android.code_check.util.setOnSearchActionListener
+import jp.co.yumemi.android.codecheck.R
+import jp.co.yumemi.android.codecheck.databinding.FragmentSearchScreenBinding
+import jp.co.yumemi.android.codecheck.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.codecheck.util.autoCleared
+import jp.co.yumemi.android.codecheck.util.setOnSearchActionListener
 
 /**
  * 検索画面かつホーム画面

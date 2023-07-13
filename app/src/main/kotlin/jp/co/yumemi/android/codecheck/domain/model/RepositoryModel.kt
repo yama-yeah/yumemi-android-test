@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.domain.model
+package jp.co.yumemi.android.codecheck.domain.model
 
 import android.os.Parcelable
 import androidx.recyclerview.widget.DiffUtil

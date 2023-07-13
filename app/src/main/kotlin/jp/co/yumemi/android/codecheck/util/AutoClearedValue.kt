@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.yumemi.android.code_check.util
+package jp.co.yumemi.android.codecheck.util
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver

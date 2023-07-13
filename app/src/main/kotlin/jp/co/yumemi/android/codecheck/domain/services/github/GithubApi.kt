@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.domain.services.github
+package jp.co.yumemi.android.codecheck.domain.services.github
 
 import android.util.Log
 import io.ktor.client.HttpClient

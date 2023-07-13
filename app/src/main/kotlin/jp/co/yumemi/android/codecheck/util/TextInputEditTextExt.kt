@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.util
+package jp.co.yumemi.android.codecheck.util
 
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
