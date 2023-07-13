@@ -5,7 +5,7 @@ package jp.co.yumemi.android.codecheck.ui.search
 
 import androidx.lifecycle.ViewModel
 import jp.co.yumemi.android.codecheck.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.codecheck.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.codecheck.domain.model.RepositoryModel
 import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApi
 import jp.co.yumemi.android.codecheck.domain.services.github.GithubApiImpl
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +19,7 @@ import java.util.Date
  * 検索画面のViewModel
  */
 class SearchScreenViewModel : ViewModel() {
-    private val _repositoriesStateFlow = MutableStateFlow<List<RepositoryDataModel>>(
+    private val _repositoriesStateFlow = MutableStateFlow<List<RepositoryModel>>(
         emptyList()
     )
     val repositoriesStateFlow get() = _repositoriesStateFlow.asStateFlow()
@@ -37,7 +37,7 @@ class SearchScreenViewModel : ViewModel() {
 
             _repositoriesStateFlow.value = listOf()
 
-            val repositories = mutableListOf<RepositoryDataModel>()
+            val repositories = mutableListOf<RepositoryModel>()
 
             // 検索結果がない場合は空のリストを返す
             // Toastか何か出さないと検索終わったかわかりにくい
@@ -49,7 +49,7 @@ class SearchScreenViewModel : ViewModel() {
             for (i in 0 until jsonRepositories.length()) {
                 val jsonRepository = jsonRepositories.optJSONObject(i)!!
 
-                repositories.add(RepositoryDataModel.fromJson(jsonRepository))
+                repositories.add(RepositoryModel.fromJson(jsonRepository))
             }
             _repositoriesStateFlow.value = repositories
             // 検索した日時を保存

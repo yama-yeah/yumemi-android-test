@@ -10,7 +10,7 @@ import org.json.JSONObject
  * リポジトリを表すデータクラス
  */
 @Parcelize
-data class RepositoryDataModel(
+data class RepositoryModel(
     val name: String,
     val ownerIconUrl: String,
     val language: String,
@@ -20,7 +20,7 @@ data class RepositoryDataModel(
     val openIssuesCount: Long,
 ) : Parcelable {
     companion object {
-        fun fromJson(json: JSONObject): RepositoryDataModel {
+        fun fromJson(json: JSONObject): RepositoryModel {
             val name =
                 json.optString("full_name")
             val ownerIconUrl = json.optJSONObject("owner")?.optString("avatar_url")
@@ -30,7 +30,7 @@ data class RepositoryDataModel(
             val watchersCount = json.optLong("watchers_count")
             val forksCount = json.optLong("forks_count")
             val openIssuesCount = json.optLong("open_issues_count")
-            return RepositoryDataModel(
+            return RepositoryModel(
                 name = name,
                 ownerIconUrl = ownerIconUrl,
                 language = language,
@@ -44,17 +44,17 @@ data class RepositoryDataModel(
 }
 
 
-val repositoryDiffUtil = object : DiffUtil.ItemCallback<RepositoryDataModel>() {
+val repositoryDiffUtil = object : DiffUtil.ItemCallback<RepositoryModel>() {
     override fun areItemsTheSame(
-        oldItem: RepositoryDataModel,
-        newItem: RepositoryDataModel
+        oldItem: RepositoryModel,
+        newItem: RepositoryModel
     ): Boolean {
         return oldItem.name == newItem.name
     }
 
     override fun areContentsTheSame(
-        oldItem: RepositoryDataModel,
-        newItem: RepositoryDataModel
+        oldItem: RepositoryModel,
+        newItem: RepositoryModel
     ): Boolean {
         return oldItem == newItem
     }

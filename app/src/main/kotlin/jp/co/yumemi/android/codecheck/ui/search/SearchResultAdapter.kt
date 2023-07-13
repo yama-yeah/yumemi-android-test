@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.codecheck.R
-import jp.co.yumemi.android.codecheck.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.codecheck.domain.model.RepositoryModel
 import jp.co.yumemi.android.codecheck.domain.model.repositoryDiffUtil
 
 
@@ -16,8 +16,8 @@ import jp.co.yumemi.android.codecheck.domain.model.repositoryDiffUtil
  * リストをタップすると、リポジトリ詳細画面に遷移する
  */
 class SearchResultAdapter(
-    private val onClicked: (RepositoryDataModel) -> Unit,
-) : ListAdapter<RepositoryDataModel, SearchResultAdapter.ViewHolder>(repositoryDiffUtil) {
+    private val onClicked: (RepositoryModel) -> Unit,
+) : ListAdapter<RepositoryModel, SearchResultAdapter.ViewHolder>(repositoryDiffUtil) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 

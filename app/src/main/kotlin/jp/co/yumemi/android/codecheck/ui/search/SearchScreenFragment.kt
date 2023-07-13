@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.yumemi.android.codecheck.R
 import jp.co.yumemi.android.codecheck.databinding.FragmentSearchScreenBinding
-import jp.co.yumemi.android.codecheck.domain.model.RepositoryDataModel
+import jp.co.yumemi.android.codecheck.domain.model.RepositoryModel
 import jp.co.yumemi.android.codecheck.util.autoCleared
 import jp.co.yumemi.android.codecheck.util.setOnSearchActionListener
 
@@ -58,7 +58,7 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
      * リポジトリ詳細画面に遷移する
      * @param repository 選択したリポジトリ
      */
-    private fun gotoDetailScreen(repository: RepositoryDataModel) {
+    private fun gotoDetailScreen(repository: RepositoryModel) {
         val action =
             SearchScreenFragmentDirections.actionSearchToDetail(repository)
         findNavController().navigate(action)
