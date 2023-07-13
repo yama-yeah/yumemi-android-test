@@ -6,8 +6,8 @@ package jp.co.yumemi.android.code_check.ui.search
 import androidx.lifecycle.ViewModel
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
-import jp.co.yumemi.android.code_check.domain.services.github.GithubApi
-import jp.co.yumemi.android.code_check.domain.services.github.IGitHubApi
+import jp.co.yumemi.android.code_check.domain.services.github.GitHubApi
+import jp.co.yumemi.android.code_check.domain.services.github.GithubApiImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import java.util.Date
  */
 class SearchScreenViewModel : ViewModel() {
     private val _repositoriesStateFlow = MutableStateFlow<List<RepositoryDataModel>>(
-        mutableListOf()
+        emptyList()
     )
     val repositoriesStateFlow get() = _repositoriesStateFlow.asStateFlow()
 
@@ -29,7 +29,7 @@ class SearchScreenViewModel : ViewModel() {
      * @param repositoryName リポジトリ名
      */
     fun searchRepositories(repositoryName: String): Unit = runBlocking {
-        val githubApi: IGitHubApi = GithubApi()
+        val githubApi: GitHubApi = GithubApiImpl()
 
         CoroutineScope(coroutineContext).async {
             // GitHubのAPIからリポジトリの情報のJSONを取得する
