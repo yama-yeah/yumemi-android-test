@@ -21,8 +21,10 @@ data class RepositoryDataModel(
 ) : Parcelable {
     companion object {
         fun fromJson(json: JSONObject): RepositoryDataModel {
-            val name = json.optString("full_name")
-            val ownerIconUrl = json.optJSONObject("owner")!!.optString("avatar_url")
+            val name =
+                json.optString("full_name")
+            val ownerIconUrl = json.optJSONObject("owner")?.optString("avatar_url")
+                ?: "https://via.placeholder.com/500x500.png?text=Owner%20has%20not%20Picture"
             val language = json.optString("language")
             val stargazersCount = json.optLong("stargazers_count")
             val watchersCount = json.optLong("watchers_count")
