@@ -13,6 +13,6 @@ class TopActivity : AppCompatActivity(R.layout.activity_top) {
 
     companion object {
         // 検索した日時
-        lateinit var lastSearchDate: Date
+        var lastSearchDate: Date? = null
     }
 }
