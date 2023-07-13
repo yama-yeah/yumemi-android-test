@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/SearchScreenFragment"
-        android:name="jp.co.yumemi.android.code_check.ui.search.SearchScreenFragment"
+        android:name="jp.co.yumemi.android.codecheck.ui.search.SearchScreenFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_search_screen">
         <action
             android:id="@+id/action_search_to_detail"
-            app:destination="@id/DetaulScreenFragment" />
+            app:destination="@id/DetailScreenFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/DetaulScreenFragment"
-        android:name="jp.co.yumemi.android.code_check.ui.detail.DetailScreenFragment"
+        android:id="@+id/DetailScreenFragment"
+        android:name="jp.co.yumemi.android.codecheck.ui.detail.DetailScreenFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_detail_screen">
         <argument
-            android:name="item"
-            app:argType="jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel" />
+            android:name="repository"
+            app:argType="jp.co.yumemi.android.codecheck.domain.model.RepositoryModel" />
     </fragment>
 
 </navigation>

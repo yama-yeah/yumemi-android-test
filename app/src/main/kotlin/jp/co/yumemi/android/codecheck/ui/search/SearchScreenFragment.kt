@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check.ui.search
+package jp.co.yumemi.android.codecheck.ui.search
 
 import android.os.Bundle
 import android.view.View
@@ -10,10 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.databinding.FragmentSearchScreenBinding
-import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
-import jp.co.yumemi.android.code_check.util.setOnSearchActionListener
+import jp.co.yumemi.android.codecheck.R
+import jp.co.yumemi.android.codecheck.databinding.FragmentSearchScreenBinding
+import jp.co.yumemi.android.codecheck.domain.model.RepositoryModel
+import jp.co.yumemi.android.codecheck.util.autoCleared
+import jp.co.yumemi.android.codecheck.util.setOnSearchActionListener
 
 /**
  * 検索画面かつホーム画面
@@ -23,14 +24,15 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
     private val viewModel: SearchScreenViewModel by viewModels()
 
     // アダプターを作成する
-    private val adapter = SearchResultAdapter {
-        gotoDetailScreen(it)
-    }
+    private var adapter by autoCleared<SearchResultAdapter>()
 
+    private var binding by autoCleared<FragmentSearchScreenBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val binding = FragmentSearchScreenBinding.bind(view)
+        adapter = SearchResultAdapter {
+            gotoDetailScreen(it)
+        }
+        binding = FragmentSearchScreenBinding.bind(view)
 
         val repositoriesFlow = viewModel.repositoriesStateFlow
         // アダプターのリストを初期化
@@ -56,7 +58,7 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
      * リポジトリ詳細画面に遷移する
      * @param repository 選択したリポジトリ
      */
-    private fun gotoDetailScreen(repository: RepositoryDataModel) {
+    private fun gotoDetailScreen(repository: RepositoryModel) {
         val action =
             SearchScreenFragmentDirections.actionSearchToDetail(repository)
         findNavController().navigate(action)
