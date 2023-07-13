@@ -24,14 +24,14 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
     private val viewModel: SearchScreenViewModel by viewModels()
 
     // アダプターを作成する
-    private val adapter = SearchResultAdapter {
-        gotoDetailScreen(it)
-    }
+    private var adapter by autoCleared<SearchResultAdapter>()
 
     private var binding by autoCleared<FragmentSearchScreenBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        adapter = SearchResultAdapter {
+            gotoDetailScreen(it)
+        }
         binding = FragmentSearchScreenBinding.bind(view)
 
         val repositoriesFlow = viewModel.repositoriesStateFlow
