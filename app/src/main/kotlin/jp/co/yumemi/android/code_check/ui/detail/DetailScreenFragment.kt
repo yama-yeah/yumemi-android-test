@@ -30,17 +30,18 @@ class DetailScreenFragment : Fragment(R.layout.fragment_detail_screen) {
 
         binding = FragmentDetailScreenBinding.bind(view)
 
-        val item = args.item
+        val repository = args.repository
         // 画面にリポジトリの情報を表示する
-        binding.ownerIconView.load(item.ownerIconUrl)
-        binding.nameView.text = item.name
-        binding.languageView.text = getString(R.string.repo_written_language, item.language)
+        binding.ownerIconView.load(repository.ownerIconUrl)
+        binding.nameView.text = repository.name
+        binding.languageView.text = getString(R.string.repo_written_language, repository.language)
         binding.starsView.text =
-            getString(R.string.repo_stars_cnt, item.stargazersCount.toString())
+            getString(R.string.repo_stars_cnt, repository.stargazersCount.toString())
         binding.watchersView.text =
-            getString(R.string.repo_watchers_cnt, item.watchersCount.toString())
-        binding.forksView.text = getString(R.string.repo_forks_cnt, item.forksCount.toString())
+            getString(R.string.repo_watchers_cnt, repository.watchersCount.toString())
+        binding.forksView.text =
+            getString(R.string.repo_forks_cnt, repository.forksCount.toString())
         binding.openIssuesView.text =
-            getString(R.string.repo_open_issues_cnt, item.openIssuesCount.toString())
+            getString(R.string.repo_open_issues_cnt, repository.openIssuesCount.toString())
     }
 }
