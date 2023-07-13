@@ -3,6 +3,7 @@ package jp.co.yumemi.android.code_check.domain.model
 import android.os.Parcelable
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.parcelize.Parcelize
+import org.json.JSONObject
 
 
 /**
@@ -17,7 +18,28 @@ data class RepositoryDataModel(
     val watchersCount: Long,
     val forksCount: Long,
     val openIssuesCount: Long,
-) : Parcelable
+) : Parcelable {
+    companion object {
+        fun fromJson(json: JSONObject): RepositoryDataModel {
+            val name = json.optString("full_name")
+            val ownerIconUrl = json.optJSONObject("owner")!!.optString("avatar_url")
+            val language = json.optString("language")
+            val stargazersCount = json.optLong("stargazers_count")
+            val watchersCount = json.optLong("watchers_count")
+            val forksCount = json.optLong("forks_count")
+            val openIssuesCount = json.optLong("open_issues_count")
+            return RepositoryDataModel(
+                name = name,
+                ownerIconUrl = ownerIconUrl,
+                language = language,
+                stargazersCount = stargazersCount,
+                watchersCount = watchersCount,
+                forksCount = forksCount,
+                openIssuesCount = openIssuesCount
+            )
+        }
+    }
+}
 
 
 val repositoryDiffUtil = object : DiffUtil.ItemCallback<RepositoryDataModel>() {

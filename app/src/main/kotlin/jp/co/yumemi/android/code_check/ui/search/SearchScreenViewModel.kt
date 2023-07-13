@@ -4,75 +4,56 @@
 package jp.co.yumemi.android.code_check.ui.search
 
 import androidx.lifecycle.ViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.engine.android.Android
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.parameter
-import io.ktor.client.statement.HttpResponse
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.domain.model.RepositoryDataModel
-import kotlinx.coroutines.GlobalScope
+import jp.co.yumemi.android.code_check.domain.services.github.GithubApi
+import jp.co.yumemi.android.code_check.domain.services.github.IGitHubApi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
-import org.json.JSONObject
 import java.util.Date
 
 /**
  * 検索画面のViewModel
  */
 class SearchScreenViewModel : ViewModel() {
+    private val _repositoriesStateFlow = MutableStateFlow<List<RepositoryDataModel>>(
+        mutableListOf()
+    )
+    val repositoriesStateFlow get() = _repositoriesStateFlow.asStateFlow()
 
     /**
      * 検索結果を返す
-     * @param inputText リポジトリ名
+     * @param repositoryName リポジトリ名
      */
-    fun searchResults(inputText: String): List<RepositoryDataModel> = runBlocking {
-        val client = HttpClient(Android)
+    fun searchRepositories(repositoryName: String): Unit = runBlocking {
+        val githubApi: IGitHubApi = GithubApi()
 
-        return@runBlocking GlobalScope.async {
-            // 検索結果をApiから取得（json形式）
-            val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
-                header("Accept", "application/vnd.github.v3+json")
-                parameter("q", inputText)
+        CoroutineScope(coroutineContext).async {
+            // GitHubのAPIからリポジトリの情報のJSONを取得する
+            val jsonRepositories = githubApi.getRepositoriesJson(repositoryName)
+
+            _repositoriesStateFlow.value = listOf()
+
+            val repositories = mutableListOf<RepositoryDataModel>()
+
+            // 検索結果がない場合は空のリストを返す
+            // Toastか何か出さないと検索終わったかわかりにくい
+            if (jsonRepositories == null || jsonRepositories.length() == 0) {
+                return@async
             }
 
-            val jsonBody = JSONObject(response.body<String>())
-            // jsonからリポジトリたちを取得
-            val jsonItems = jsonBody.optJSONArray("items")!!
+            //リポジトリたちから一個ずつ情報を取得して、jsonRepositoriesにrepositoryとして追加していく
+            for (i in 0 until jsonRepositories.length()) {
+                val jsonRepository = jsonRepositories.optJSONObject(i)!!
 
-            val items = mutableListOf<RepositoryDataModel>()
-
-            /**
-             * リポジトリたちから一個ずつ情報を取得して、itemsにItemとして追加していく
-             */
-            for (i in 0 until jsonItems.length()) {
-                val jsonItem = jsonItems.optJSONObject(i)!!
-                val name = jsonItem.optString("full_name")
-                val ownerIconUrl = jsonItem.optJSONObject("owner")!!.optString("avatar_url")
-                val language = jsonItem.optString("language")
-                val stargazersCount = jsonItem.optLong("stargazers_count")
-                val watchersCount = jsonItem.optLong("watchers_count")
-                val forksCount = jsonItem.optLong("forks_count")
-                val openIssuesCount = jsonItem.optLong("open_issues_count")
-
-                items.add(
-                    RepositoryDataModel(
-                        name = name,
-                        ownerIconUrl = ownerIconUrl,
-                        language = language,
-                        stargazersCount = stargazersCount,
-                        watchersCount = watchersCount,
-                        forksCount = forksCount,
-                        openIssuesCount = openIssuesCount
-                    )
-                )
+                repositories.add(RepositoryDataModel.fromJson(jsonRepository))
             }
+            _repositoriesStateFlow.value = repositories
             // 検索した日時を保存
             lastSearchDate = Date()
-
-            return@async items.toList()
         }.await()
     }
 }
