@@ -10,7 +10,7 @@ import io.ktor.client.statement.HttpResponse
 import org.json.JSONArray
 import org.json.JSONObject
 
-class GithubApi : IGitHubApi {
+class GithubApiImpl : GitHubApi {
     private val client = HttpClient(Android)
     override suspend fun getRepositoriesJson(repositoryName: String): JSONArray? {
         val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
@@ -25,6 +25,6 @@ class GithubApi : IGitHubApi {
     }
 }
 
-interface IGitHubApi {
+interface GitHubApi {
     suspend fun getRepositoriesJson(repositoryName: String): JSONArray?
 }
