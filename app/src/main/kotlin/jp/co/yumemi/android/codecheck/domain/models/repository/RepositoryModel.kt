@@ -1,7 +1,6 @@
-package jp.co.yumemi.android.codecheck.domain.model
+package jp.co.yumemi.android.codecheck.domain.models.repository
 
 import android.os.Parcelable
-import androidx.recyclerview.widget.DiffUtil
 import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
 
@@ -41,22 +40,4 @@ data class RepositoryModel(
             )
         }
     }
-}
-
-
-val repositoryDiffUtil = object : DiffUtil.ItemCallback<RepositoryModel>() {
-    override fun areItemsTheSame(
-        oldItem: RepositoryModel,
-        newItem: RepositoryModel
-    ): Boolean {
-        return oldItem.name == newItem.name
-    }
-
-    override fun areContentsTheSame(
-        oldItem: RepositoryModel,
-        newItem: RepositoryModel
-    ): Boolean {
-        return oldItem == newItem
-    }
-
 }
