@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_detail_screen">
         <argument
             android:name="repository"
-            app:argType="jp.co.yumemi.android.codecheck.domain.model.RepositoryModel" />
+            app:argType="jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel" />
     </fragment>
 
 </navigation>
