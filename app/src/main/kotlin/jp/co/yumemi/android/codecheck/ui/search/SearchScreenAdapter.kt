@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.scopes.FragmentScoped
 import jp.co.yumemi.android.codecheck.R
 import jp.co.yumemi.android.codecheck.databinding.LayoutRepositoryBinding
-import jp.co.yumemi.android.codecheck.domain.model.RepositoryModel
-import jp.co.yumemi.android.codecheck.domain.model.repositoryDiffUtil
+import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryDiffUtil
+import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
 import javax.inject.Inject
 
 
@@ -19,9 +19,10 @@ import javax.inject.Inject
  * リストをタップすると、リポジトリ詳細画面に遷移する
  */
 @FragmentScoped
-class SearchResultAdapter @Inject constructor(
-    private val navigator: SearchScreenNavigator
-) : ListAdapter<RepositoryModel, SearchResultAdapter.ViewHolder>(repositoryDiffUtil) {
+class SearchScreenAdapter @Inject constructor(
+    private val navigator: SearchScreenNavigator,
+    repositoryDiffUtil: RepositoryDiffUtil
+) : ListAdapter<RepositoryModel, SearchScreenAdapter.ViewHolder>(repositoryDiffUtil) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
