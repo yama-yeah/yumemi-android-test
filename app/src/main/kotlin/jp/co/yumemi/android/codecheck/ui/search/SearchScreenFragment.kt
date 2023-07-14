@@ -27,7 +27,7 @@ class SearchScreenFragment : Fragment(R.layout.fragment_search_screen) {
     private var binding by autoCleared<FragmentSearchScreenBinding>()
 
     @Inject
-    lateinit var adapter: SearchResultAdapter
+    lateinit var adapter: SearchScreenAdapter
 
     @Inject
     lateinit var dividerItemDecoration: DividerItemDecoration

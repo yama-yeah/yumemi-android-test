@@ -19,9 +19,9 @@ import javax.inject.Inject
  * リストをタップすると、リポジトリ詳細画面に遷移する
  */
 @FragmentScoped
-class SearchResultAdapter @Inject constructor(
+class SearchScreenAdapter @Inject constructor(
     private val navigator: SearchScreenNavigator
-) : ListAdapter<RepositoryModel, SearchResultAdapter.ViewHolder>(repositoryDiffUtil) {
+) : ListAdapter<RepositoryModel, SearchScreenAdapter.ViewHolder>(repositoryDiffUtil) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
