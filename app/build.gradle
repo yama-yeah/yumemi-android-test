@@ -20,7 +20,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testApplicationId "jp.co.yumemi.android.codechecktest"
+        testApplicationId "jp.co.yumemi.android.codecheck.test"
 
         //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "jp.co.yumemi.android.codecheck.CustomTestRunner"
