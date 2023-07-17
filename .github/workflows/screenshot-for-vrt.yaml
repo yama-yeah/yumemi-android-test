@@ -42,5 +42,6 @@ jobs:
           then
             git add .
             git commit -m "$(date '+%Y-%m-%d %H:%M:%S') update screenshots"
-            git push origin HEAD:main
+            git push origin main
+            echo "Pushed to main"
           fi
