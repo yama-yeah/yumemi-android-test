@@ -35,5 +35,5 @@ jobs:
           then
             git add .
             git commit -m "$(date '+%Y-%m-%d %H:%M:%S') update screenshots"
-            git push -f origin HEAD:7-テストを追加
+            git push origin HEAD:main
           fi
