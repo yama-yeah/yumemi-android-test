@@ -52,8 +52,33 @@ jobs:
           java-version: 17
           cache: gradle
       - name: run tests
+        continue-on-error: true
+        id: error_execution
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
-          disable-animations: true
-          script: adb shell settings put global hidden_api_policy 1 && ./gradlew executeScreenshotTests -Precord
+          api-level: 34
+          disable-animations: false
+          target: google_apis
+          arch: x86_64
+          script: |
+            adb shell settings put global hidden_api_policy 1
+            ./gradlew executeScreenshotTests
+      - name: change to build directory for report error
+        if: ${{ steps.error_execution.outcome == 'failure' }}
+        run: |
+          if [ ! -d "app/build/reports/shot/debug/verification/" ]; then
+            sed -e 's/app\/build\/reports\/shot\/debug\/verification/app\/build\/reports\/androidTests\/connected/g' ./firebase_base.json > ./firebase.json
+            echo "change to build directory for report build error"
+          fi
+      - name: deploy report
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_YUMEMI_ANDROID_TEST }}'
+          channelId: live
+          projectId: yumemi-android-test
+      - name: report error
+        if: ${{ steps.error_execution.outcome == 'failure' }}
+        run: |
+          echo ${{ steps.error_execution.outcome }}
+          exit 1
