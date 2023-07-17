@@ -1,10 +1,25 @@
 package jp.co.yumemi.android.codecheck
 
+import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Rect
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock.sleep
+import android.view.PixelCopy
+import android.view.View
+import android.view.Window
+import androidx.fragment.app.Fragment
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.pressImeActionButton
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.util.TreeIterables
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -16,11 +31,17 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.testing.TestInstallIn
+import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
 import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApi
-import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApiImpl
 import jp.co.yumemi.android.codecheck.domain.services.github.GitHubService
+import jp.co.yumemi.android.codecheck.domain.services.github.MockGitHubApi
+import jp.co.yumemi.android.codecheck.fakedata.RepositoriesFakeJson
+import jp.co.yumemi.android.codecheck.ui.detail.DetailScreenFragment
 import jp.co.yumemi.android.codecheck.ui.search.SearchScreenGitHubService
 import jp.co.yumemi.android.codecheck.ui.search.SearchScreenViewModelModule
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
+import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -42,28 +63,122 @@ class VisualAppTest : ScreenshotTest {
     var activityRule: ActivityScenarioRule<TopActivity> =
         ActivityScenarioRule(TopActivity::class.java)
 
+    @Test
+    fun testDetailScreen() {
+        val repository = RepositoryModel(
+            name = "flutter",
+            ownerIconUrl = "https://avatars.githubusercontent.com/u/14101776?v=4",
+            language = "Dart",
+            stargazersCount = 128000,
+            forksCount = 20000,
+            openIssuesCount = 1000,
+            watchersCount = 128000,
+        )
+        val fragmentArgs = Bundle().apply {
+            putParcelable("repository", repository)
+        }
+        activityRule.scenario.onActivity {
+            it.supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, DetailScreenFragment::class.java, fragmentArgs)
+                .commit()
+        }
+        sleep(6000)
+        activityRule.scenario.onActivity { activity ->
+            activity.supportFragmentManager.fragments.forEach { fragment ->
+                if (fragment.isVisible) {
+                    compareBitmap(fragment, name = "normal_state_detail_screen")
+                }
+            }
+        }
+    }
 
     @Test
-    fun testEvent() {
-        hiltRule.inject()
-        onView(
-            withId(R.id.searchInputText),
-        ).perform(
-            ViewActions.replaceText("flutter"),
-            ViewActions.closeSoftKeyboard(),
-            pressImeActionButton()
-        )
+    fun testSearchScreen() {
         activityRule.scenario.onActivity {
-            compareScreenshot(it, name = "normal_state_search_screen")
+            compareBitmap(it, name = "normal_state_search_screen")
         }
-        Thread.sleep(256)
-        activityRule.scenario.onActivity {
-            compareScreenshot(it, name = "searching_state_search_screen")
+    }
+
+
+    private fun searchForView(viewMatcher: Matcher<View>): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints() = isRoot()
+            override fun getDescription() = "search for view with $viewMatcher in the root view"
+
+            override fun perform(uiController: UiController, view: View) {
+                TreeIterables.breadthFirstViewTraversal(view).forEach {
+                    if (viewMatcher.matches(it)) {
+                        return
+                    }
+                }
+
+                throw NoMatchingViewException.Builder()
+                    .withRootView(view)
+                    .withViewMatcher(viewMatcher)
+                    .build()
+            }
         }
-        onView(withText("flutter/samples")).perform(ViewActions.click())
-        Thread.sleep(256)
-        activityRule.scenario.onActivity {
-            compareScreenshot(it, name = "normal_state_detail_screen")
+    }
+
+    fun waitForView(
+        vararg viewMatchers: Matcher<View>,
+        retries: Int = 64,
+        wait: Long = 1000L,
+    ): ViewInteraction {
+        require(retries > 0 && wait > 0)
+        val viewMatcher = allOf(*viewMatchers)
+        for (i in 0 until retries) {
+            try {
+                onView(isRoot()).perform(searchForView(viewMatcher))
+                break
+            } catch (e: Exception) {
+                if (i == retries) {
+                    throw Exception("${e.message} after ${retries * wait}ms: ${e.stackTraceToString()}")
+                }
+
+                Thread.sleep(wait)
+            }
+        }
+        return onView(viewMatcher)
+    }
+
+    fun captureView(view: View, window: Window, bitmapCallback: (Bitmap) -> Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Above Android O, use PixelCopy
+            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+            val location = IntArray(2)
+            view.getLocationInWindow(location)
+            PixelCopy.request(
+                window,
+                Rect(location[0], location[1], location[0] + view.width, location[1] + view.height),
+                bitmap,
+                {
+                    if (it == PixelCopy.SUCCESS) {
+                        bitmapCallback.invoke(bitmap)
+                    }
+                },
+                Handler(Looper.getMainLooper())
+            )
+        } else {
+            val tBitmap = Bitmap.createBitmap(
+                view.width, view.height, Bitmap.Config.RGB_565
+            )
+            val canvas = Canvas(tBitmap)
+            view.draw(canvas)
+            canvas.setBitmap(null)
+            bitmapCallback.invoke(tBitmap)
+        }
+    }
+
+    fun compareBitmap(activity: Activity, name: String) {
+        captureView(activity.findViewById(android.R.id.content), activity.window) { bm ->
+            compareScreenshot(bm, name = name)
+        }
+    }
+
+    fun compareBitmap(fragment: Fragment, name: String) {
+        captureView(fragment.requireView(), fragment.requireActivity().window) { bm ->
+            compareScreenshot(bm, name = name)
         }
     }
 }
@@ -78,7 +193,7 @@ class FakeModule {
 
     @ViewModelScoped
     @Provides
-    fun provideFakeGitHubApi(api: GitHubApiImpl): GitHubApi {
+    fun provideFakeGitHubApi(api: MockGitHubApi): GitHubApi {
         return api
     }
 
@@ -88,5 +203,27 @@ class FakeModule {
         githubService: GitHubService
     ): SearchScreenGitHubService {
         return githubService
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideViewModelState(): List<RepositoryModel> {
+        val jsonRepositories = JSONObject(RepositoriesFakeJson).optJSONArray("items")
+
+        val repositories = mutableListOf<RepositoryModel>()
+
+        // 検索結果がない場合は空のリストを返す
+        // Toastか何か出さないと検索終わったかわかりにくい
+        if (jsonRepositories == null || jsonRepositories.length() == 0) {
+            return emptyList()
+        }
+
+        //JSONからRepositoriesに変換する
+        for (i in 0 until jsonRepositories.length()) {
+            val jsonRepository = jsonRepositories.optJSONObject(i)!!
+
+            repositories.add(RepositoryModel.fromJson(jsonRepository))
+        }
+        return repositories
     }
 }

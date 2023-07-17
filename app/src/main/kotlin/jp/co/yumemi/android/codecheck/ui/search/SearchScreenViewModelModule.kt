@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
 import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApi
 import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApiImpl
 import jp.co.yumemi.android.codecheck.domain.services.github.GitHubService
@@ -27,5 +28,11 @@ class SearchScreenViewModelModule {
         githubService: GitHubService
     ): SearchScreenGitHubService {
         return githubService
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideViewModelState(): List<RepositoryModel> {
+        return emptyList()
     }
 }

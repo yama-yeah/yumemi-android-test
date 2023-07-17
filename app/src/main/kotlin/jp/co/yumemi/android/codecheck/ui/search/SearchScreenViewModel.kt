@@ -19,10 +19,11 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(
-    private val githubService: SearchScreenGitHubService
+    private val githubService: SearchScreenGitHubService,
+    initStateRepositories: List<RepositoryModel>
 ) : ViewModel() {
     private val _repositoriesStateFlow = MutableStateFlow<List<RepositoryModel>>(
-        emptyList()
+        initStateRepositories
     )
     val repositoriesStateFlow get() = _repositoriesStateFlow.asStateFlow()
 
