@@ -39,5 +39,8 @@ class GitHubApiImpl @Inject constructor() : GitHubApi {
  * GitHubのAPIからの情報をそのまま返す
  */
 interface GitHubApi {
+    /**
+     * リポジトリのJSONArrayを取得する
+     */
     suspend fun getRepositoriesJson(repositoryName: String): JSONArray?
 }
