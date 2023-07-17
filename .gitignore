@@ -95,3 +95,4 @@ lint/tmp/
 
 # Trash files dependent on local environment
 .python-version
+.DS_Store
