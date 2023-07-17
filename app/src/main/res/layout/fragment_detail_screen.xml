@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.detail.DetailScreenFragment">
 
     <ImageView
         android:id="@+id/ownerIconView"
@@ -23,12 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="JetBrains/kotlin"
+        android:text="@string/repo_title"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ownerIconView" />
+        app:layout_constraintTop_toBottomOf="@id/ownerIconView"
+        tools:text="JetBrains/kotlin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/centerGuid"
@@ -42,12 +44,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Written in Kotlin"
+        android:layout_marginEnd="8dp"
+        android:text="@string/repo_written_language"
         android:textColor="@color/black"
         android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/centerGuid"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nameView"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:text="Written in Kotlin" />
 
     <TextView
         android:id="@+id/starsView"
@@ -55,13 +62,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:text="38530 stars"
+        android:text="@string/repo_stars_cnt"
         android:textAlignment="textEnd"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/centerGuid"
-        app:layout_constraintTop_toBottomOf="@id/nameView" />
+        app:layout_constraintTop_toBottomOf="@id/nameView"
+        tools:text="38530 stars" />
 
     <TextView
         android:id="@+id/watchersView"
@@ -69,13 +77,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:text="38530 watchers"
+        android:text="@string/repo_watchers_cnt"
         android:textAlignment="textEnd"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/centerGuid"
-        app:layout_constraintTop_toBottomOf="@id/starsView" />
+        app:layout_constraintTop_toBottomOf="@id/starsView"
+        tools:text="38530 watchers" />
 
     <TextView
         android:id="@+id/forksView"
@@ -83,13 +92,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:text="4675 forks"
+        android:text="@string/repo_forks_cnt"
         android:textAlignment="textEnd"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/centerGuid"
-        app:layout_constraintTop_toBottomOf="@id/watchersView" />
+        app:layout_constraintTop_toBottomOf="@id/watchersView"
+        tools:text="4675 forks" />
 
     <TextView
         android:id="@+id/openIssuesView"
@@ -97,12 +107,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:text="131 open issues"
+        android:text="@string/repo_open_issues_cnt"
         android:textAlignment="textEnd"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/centerGuid"
-        app:layout_constraintTop_toBottomOf="@id/forksView" />
+        app:layout_constraintTop_toBottomOf="@id/forksView"
+        tools:text="131 open issues" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

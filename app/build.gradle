@@ -4,20 +4,26 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.dagger.hilt.android'
 }
 
+apply plugin: 'shot'
+
 android {
-    namespace 'jp.co.yumemi.android.code_check'
-    compileSdk 33
+    namespace 'jp.co.yumemi.android.codecheck'
+    compileSdk 34
 
     defaultConfig {
         applicationId "jp.co.yumemi.android.codecheck"
         minSdk 23
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testApplicationId "jp.co.yumemi.android.codecheck.test"
+
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "jp.co.yumemi.android.codecheck.CustomTestRunner"
     }
 
     buildTypes {
@@ -61,4 +67,24 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test:core-ktx:1.5.0'
+
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.47'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.47'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
+
+    implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
+
+    implementation 'com.google.dagger:hilt-android:2.47'
+
+    kapt "com.google.dagger:hilt-compiler:2.47"
+}
+
+kapt {
+    correctErrorTypes = true
+}
+
+shot {
+    applicationId = "jp.co.yumemi.android.codecheck"
 }

@@ -1,0 +1,39 @@
+name: "Screenshot for vrt"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  VRT:
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+          cache: gradle
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          disable-animations: true
+          target: google_apis
+          arch: x86_64
+          #          mulator-options: -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          script: adb shell settings put global hidden_api_policy 1 && ./gradlew executeScreenshotTests -Precord
+      - name: Configure Git
+        run: |
+          git config --global user.name "yama-yeah"
+          git config --global user.email "b1021091@fun.ac.jp"
+      - name: Push changes
+        run: |
+          if ! git diff --exit-code --quiet
+          then
+            git add .
+            git commit -m "$(date '+%Y-%m-%d %H:%M:%S') update screenshots"
+            git push origin HEAD:main
+          fi
