@@ -28,8 +28,8 @@ class SearchScreenViewModel @Inject constructor(
     val repositoriesStateFlow get() = _repositoriesStateFlow.asStateFlow()
 
     /**
-     * 検索結果を返す
-     * @param repositoryName リポジトリ名
+     * [repositoryName]を元にGitHubからリポジトリを検索して
+     * repositoriesStateFlowを更新する
      */
     fun searchRepositories(repositoryName: String): Unit = runBlocking {
         withContext(coroutineContext) {
