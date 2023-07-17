@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - main
+  paths:
+    - .github/workflows/android-lint.yml
+    - '*/src/**'
+    - gradle/**
+    - '**.gradle'
+    - gradle.properties
+    - gradlew*
 jobs:
   VRT:
     runs-on: macos-latest
