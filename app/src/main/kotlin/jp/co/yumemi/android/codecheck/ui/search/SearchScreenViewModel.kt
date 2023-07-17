@@ -22,7 +22,7 @@ class SearchScreenViewModel @Inject constructor(
     private val githubService: SearchScreenGitHubService,
     initStateRepositories: List<RepositoryModel>
 ) : ViewModel() {
-    private val _repositoriesStateFlow = MutableStateFlow<List<RepositoryModel>>(
+    private val _repositoriesStateFlow = MutableStateFlow(
         initStateRepositories
     )
     val repositoriesStateFlow get() = _repositoriesStateFlow.asStateFlow()
