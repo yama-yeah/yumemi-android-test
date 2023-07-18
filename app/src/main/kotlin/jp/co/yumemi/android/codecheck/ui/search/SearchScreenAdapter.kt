@@ -35,7 +35,7 @@ class SearchScreenAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repository = getItem(position)
-        (holder.itemView.findViewById<View>(R.id.repositoryNameView) as TextView).text =
+        (holder.itemView.findViewById<View>(R.id.repository_name_view) as TextView).text =
             repository.name
         holder.itemView.setOnClickListener {
             navigator.gotoDetailScreen(repository)

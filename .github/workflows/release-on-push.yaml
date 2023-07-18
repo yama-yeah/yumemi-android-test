@@ -4,7 +4,7 @@ on:
     branches:
       - main
     tags:
-      - '*'
+      - "v*.*.*"
 
 jobs:
   Gradle:
@@ -15,13 +15,20 @@ jobs:
       - name: setup jdk
         uses: actions/setup-java@v3
         with:
+          distribution: zulu
           java-version: 17
       - name: Make Gradle executable
         run: chmod +x ./gradlew
-      - name: Build Release APK
-        run: ./gradlew assembleRelease
-      - name: Releasing using Hub
-        uses: r0user/release-apk@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          APP_FOLDER: app
+      - name: Build Signed APK
+        uses: victorbnl/build-signed-apk@main
+        with:
+          keystore_b64: ${{ secrets.keystore }}
+          keystore_password: ${{ secrets.keystore_password }}
+          key_alias: ${{ secrets.key_alias }}
+          key_password: ${{ secrets.key_password }}
+      - name: release apk
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.TOKEN }}
+          files: |
+            app/build/outputs/apk/release/app-release.apk
