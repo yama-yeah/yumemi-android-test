@@ -59,6 +59,7 @@ jobs:
           api-level: 34
           disable-animations: false
           target: google_apis
+          profile: Pixel 4a
           arch: x86_64
           script: |
             adb shell settings put global hidden_api_policy 1
