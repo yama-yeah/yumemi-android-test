@@ -5,10 +5,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
-import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApi
-import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApiImpl
-import jp.co.yumemi.android.codecheck.domain.services.github.GitHubService
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubApi
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubApiImpl
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubService
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubServiceImpl
 
 
 @Module
@@ -25,8 +26,8 @@ class SearchScreenViewModelModule {
     @Provides
     @ViewModelScoped
     fun provideSearchScreenGithubService(
-        githubService: GitHubService
-    ): SearchScreenGitHubService {
+        githubService: GitHubServiceImpl
+    ): GitHubService {
         return githubService
     }
 

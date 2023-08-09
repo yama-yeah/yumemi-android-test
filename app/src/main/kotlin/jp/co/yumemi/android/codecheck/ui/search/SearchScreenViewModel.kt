@@ -7,7 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.codecheck.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(
-    private val githubService: SearchScreenGitHubService,
+    private val githubService: GitHubService,
     initStateRepositories: List<RepositoryModel>
 ) : ViewModel() {
     private val _repositoriesStateFlow = MutableStateFlow(
@@ -31,7 +32,7 @@ class SearchScreenViewModel @Inject constructor(
      * [repositoryName]を元にGitHubからリポジトリを検索して
      * repositoriesStateFlowを更新する
      */
-    fun searchRepositories(repositoryName: String): Unit {
+    fun searchRepositories(repositoryName: String) {
         viewModelScope.launch {
             // GitHubからRepositoryModelのリストを取得
             val repositories = githubService.getRepositories(repositoryName)

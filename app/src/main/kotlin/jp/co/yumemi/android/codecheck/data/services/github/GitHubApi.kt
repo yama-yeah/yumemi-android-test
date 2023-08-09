@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.codecheck.domain.services.github
+package jp.co.yumemi.android.codecheck.data.services.github
 
 import android.util.Log
 import dagger.hilt.android.scopes.ViewModelScoped

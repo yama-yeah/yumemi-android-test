@@ -1,16 +1,15 @@
-package jp.co.yumemi.android.codecheck.domain.services.github
+package jp.co.yumemi.android.codecheck.data.services.github
 
 import dagger.hilt.android.scopes.ViewModelScoped
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
-import jp.co.yumemi.android.codecheck.ui.search.SearchScreenGitHubService
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
 import javax.inject.Inject
 
 /**
  * GitHubのAPIから情報をモデルに起こして取得するサービス
  */
 @ViewModelScoped
-class GitHubService @Inject constructor(private val githubApi: GitHubApi) :
-    SearchScreenGitHubService {
+class GitHubServiceImpl @Inject constructor(private val githubApi: GitHubApi) :
+    GitHubService {
     override suspend fun getRepositories(repositoryName: String): List<RepositoryModel> {
         val jsonRepositories = githubApi.getRepositoriesJson(repositoryName)
 
@@ -30,4 +29,14 @@ class GitHubService @Inject constructor(private val githubApi: GitHubApi) :
         }
         return repositories
     }
+}
+
+interface GitHubService {
+    /**
+     * リポジトリを検索する
+     * @param repositoryName 検索するリポジトリ名
+     * @return 検索結果のリポジトリのリスト
+     */
+    suspend fun getRepositories(repositoryName: String): List<RepositoryModel>
+
 }
