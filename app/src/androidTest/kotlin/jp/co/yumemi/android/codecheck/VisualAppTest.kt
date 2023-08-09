@@ -5,10 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock.sleep
 import android.view.PixelCopy
 import android.view.View
 import android.view.Window
@@ -18,6 +16,8 @@ import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.util.TreeIterables
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -36,7 +36,6 @@ import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApi
 import jp.co.yumemi.android.codecheck.domain.services.github.GitHubService
 import jp.co.yumemi.android.codecheck.domain.services.github.MockGitHubApi
 import jp.co.yumemi.android.codecheck.fakedata.RepositoriesFakeJson
-import jp.co.yumemi.android.codecheck.ui.detail.DetailScreenFragment
 import jp.co.yumemi.android.codecheck.ui.search.SearchScreenGitHubService
 import jp.co.yumemi.android.codecheck.ui.search.SearchScreenViewModelModule
 import org.hamcrest.Matcher
@@ -64,38 +63,25 @@ class VisualAppTest : ScreenshotTest {
         ActivityScenarioRule(TopActivity::class.java)
 
     @Test
-    fun testDetailScreen() {
-        val repository = RepositoryModel(
-            name = "flutter",
-            ownerIconUrl = "https://avatars.githubusercontent.com/u/14101776?v=4",
-            language = "Dart",
-            stargazersCount = 128000,
-            forksCount = 20000,
-            openIssuesCount = 1000,
-            watchersCount = 128000,
+    fun testUseCase() {
+        onView(
+            ViewMatchers.withId(R.id.searchInputText),
+        ).perform(
+            ViewActions.replaceText("flutter"),
+            ViewActions.closeSoftKeyboard(),
+            ViewActions.pressImeActionButton()
         )
-        val fragmentArgs = Bundle().apply {
-            putParcelable("repository", repository)
-        }
-        activityRule.scenario.onActivity {
-            it.supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, DetailScreenFragment::class.java, fragmentArgs)
-                .commit()
-        }
-        sleep(6000)
-        activityRule.scenario.onActivity { activity ->
-            activity.supportFragmentManager.fragments.forEach { fragment ->
-                if (fragment.isVisible) {
-                    compareBitmap(fragment, name = "normal_state_detail_screen")
-                }
-            }
-        }
-    }
-
-    @Test
-    fun testSearchScreen() {
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "normal_state_search_screen")
+        }
+        Thread.sleep(256)
+        activityRule.scenario.onActivity {
+            compareBitmap(it, name = "searching_state_search_screen")
+        }
+        onView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
+        Thread.sleep(256)
+        activityRule.scenario.onActivity {
+            compareBitmap(it, name = "normal_state_detail_screen")
         }
     }
 
@@ -224,6 +210,6 @@ class FakeModule {
 
             repositories.add(RepositoryModel.fromJson(jsonRepository))
         }
-        return repositories
+        return emptyList()
     }
 }
