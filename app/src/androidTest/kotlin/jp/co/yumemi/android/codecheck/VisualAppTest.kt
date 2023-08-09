@@ -94,7 +94,7 @@ class VisualAppTest : ScreenshotTest {
             compareBitmap(it, name = "searching_state_search_screen")
         }
 
-        waitForView(ViewMatchers.withText("flutter/samples")).perform(scrollTo())
+        waitForView(ViewMatchers.withText("flutter/flutter")).perform(scrollTo())
             .perform(ViewActions.click())
         Thread.sleep(256)
         activityRule.scenario.onActivity {
