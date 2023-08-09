@@ -78,7 +78,8 @@ class VisualAppTest : ScreenshotTest {
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "searching_state_search_screen")
         }
-        onView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
+        waitForView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
+        //onView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
         Thread.sleep(256)
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "normal_state_detail_screen")
