@@ -23,6 +23,9 @@ import androidx.test.espresso.util.TreeIterables
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
 import com.karumi.shot.ScreenshotTest
 import dagger.Module
 import dagger.Provides
@@ -62,8 +65,12 @@ class VisualAppTest : ScreenshotTest {
     var activityRule: ActivityScenarioRule<TopActivity> =
         ActivityScenarioRule(TopActivity::class.java)
 
+    private lateinit var device: UiDevice
+
     @Test
     fun testUseCase() {
+        Thread.sleep(1024)
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         onView(
             ViewMatchers.withId(R.id.searchInputText),
         ).perform(
@@ -74,11 +81,14 @@ class VisualAppTest : ScreenshotTest {
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "normal_state_search_screen")
         }
-        Thread.sleep(256)
+        Thread.sleep(1024)
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "searching_state_search_screen")
         }
-        waitForView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
+        val searchInputText = device.findObject(
+            By.text("flutter/samples")
+        ).click()
+        //waitForView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
         //onView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
         Thread.sleep(256)
         activityRule.scenario.onActivity {
