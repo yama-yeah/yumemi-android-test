@@ -56,9 +56,7 @@ jobs:
         id: error_execution
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
-          disable-animations: false
-          target: google_apis
+          api-level: 31
           arch: x86_64
           script: |
             adb shell settings put global hidden_api_policy 1

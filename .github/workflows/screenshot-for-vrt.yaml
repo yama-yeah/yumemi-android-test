@@ -26,9 +26,8 @@ jobs:
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: 31
           disable-animations: true
-          target: google_apis
           arch: x86_64
           #          mulator-options: -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           script: adb shell settings put global hidden_api_policy 1 && ./gradlew executeScreenshotTests -Precord

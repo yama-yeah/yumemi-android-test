@@ -4,13 +4,13 @@
 package jp.co.yumemi.android.codecheck.ui.search
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.codecheck.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
@@ -31,8 +31,8 @@ class SearchScreenViewModel @Inject constructor(
      * [repositoryName]を元にGitHubからリポジトリを検索して
      * repositoriesStateFlowを更新する
      */
-    fun searchRepositories(repositoryName: String): Unit = runBlocking {
-        withContext(coroutineContext) {
+    fun searchRepositories(repositoryName: String): Unit {
+        viewModelScope.launch {
             // GitHubからRepositoryModelのリストを取得
             val repositories = githubService.getRepositories(repositoryName)
             _repositoriesStateFlow.value = repositories
