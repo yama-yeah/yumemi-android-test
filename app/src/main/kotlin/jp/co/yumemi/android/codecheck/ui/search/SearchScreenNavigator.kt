@@ -2,7 +2,7 @@ package jp.co.yumemi.android.codecheck.ui.search
 
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.scopes.FragmentScoped
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
 import javax.inject.Inject
 
 @FragmentScoped

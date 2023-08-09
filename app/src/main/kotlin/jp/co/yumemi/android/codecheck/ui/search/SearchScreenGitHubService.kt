@@ -1,6 +1,6 @@
 package jp.co.yumemi.android.codecheck.ui.search
 
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
 
 /**
  * GitHubのAPIから情報をモデルに起こして取得するサービス

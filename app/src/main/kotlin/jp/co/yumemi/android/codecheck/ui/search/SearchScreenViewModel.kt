@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.codecheck.TopActivity.Companion.lastSearchDate
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

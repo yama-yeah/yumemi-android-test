@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.codecheck.domain.models.repository
+package jp.co.yumemi.android.codecheck.data.models.repository
 
 import androidx.recyclerview.widget.DiffUtil
 import dagger.hilt.android.scopes.FragmentScoped

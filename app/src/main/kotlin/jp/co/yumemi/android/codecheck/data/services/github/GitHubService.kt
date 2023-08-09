@@ -1,7 +1,7 @@
-package jp.co.yumemi.android.codecheck.domain.services.github
+package jp.co.yumemi.android.codecheck.data.services.github
 
 import dagger.hilt.android.scopes.ViewModelScoped
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
 import jp.co.yumemi.android.codecheck.ui.search.SearchScreenGitHubService
 import javax.inject.Inject
 

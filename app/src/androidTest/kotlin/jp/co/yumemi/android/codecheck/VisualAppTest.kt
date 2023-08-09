@@ -32,10 +32,10 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.testing.TestInstallIn
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
-import jp.co.yumemi.android.codecheck.domain.services.github.GitHubApi
-import jp.co.yumemi.android.codecheck.domain.services.github.GitHubService
-import jp.co.yumemi.android.codecheck.domain.services.github.MockGitHubApi
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubApi
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubService
+import jp.co.yumemi.android.codecheck.data.services.github.MockGitHubApi
 import jp.co.yumemi.android.codecheck.fakedata.RepositoriesFakeJson
 import jp.co.yumemi.android.codecheck.ui.search.SearchScreenGitHubService
 import jp.co.yumemi.android.codecheck.ui.search.SearchScreenViewModelModule

@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.scopes.FragmentScoped
 import jp.co.yumemi.android.codecheck.R
 import jp.co.yumemi.android.codecheck.databinding.LayoutRepositoryBinding
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryDiffUtil
-import jp.co.yumemi.android.codecheck.domain.models.repository.RepositoryModel
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryDiffUtil
+import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
 import javax.inject.Inject
 
 
