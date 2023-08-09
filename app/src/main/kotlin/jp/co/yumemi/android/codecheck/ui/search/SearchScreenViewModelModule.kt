@@ -9,6 +9,7 @@ import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
 import jp.co.yumemi.android.codecheck.data.services.github.GitHubApi
 import jp.co.yumemi.android.codecheck.data.services.github.GitHubApiImpl
 import jp.co.yumemi.android.codecheck.data.services.github.GitHubService
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubServiceImpl
 
 
 @Module
@@ -25,8 +26,8 @@ class SearchScreenViewModelModule {
     @Provides
     @ViewModelScoped
     fun provideSearchScreenGithubService(
-        githubService: GitHubService
-    ): SearchScreenGitHubService {
+        githubService: GitHubServiceImpl
+    ): GitHubService {
         return githubService
     }
 

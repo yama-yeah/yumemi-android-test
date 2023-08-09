@@ -35,9 +35,9 @@ import dagger.hilt.testing.TestInstallIn
 import jp.co.yumemi.android.codecheck.data.models.repository.RepositoryModel
 import jp.co.yumemi.android.codecheck.data.services.github.GitHubApi
 import jp.co.yumemi.android.codecheck.data.services.github.GitHubService
+import jp.co.yumemi.android.codecheck.data.services.github.GitHubServiceImpl
 import jp.co.yumemi.android.codecheck.data.services.github.MockGitHubApi
 import jp.co.yumemi.android.codecheck.fakedata.RepositoriesFakeJson
-import jp.co.yumemi.android.codecheck.ui.search.SearchScreenGitHubService
 import jp.co.yumemi.android.codecheck.ui.search.SearchScreenViewModelModule
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
@@ -203,8 +203,8 @@ class FakeModule {
     @Provides
     @ViewModelScoped
     fun provideSearchScreenGithubService(
-        githubService: GitHubService
-    ): SearchScreenGitHubService {
+        githubService: GitHubServiceImpl
+    ): GitHubService {
         return githubService
     }
 
