@@ -16,13 +16,14 @@ import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.util.TreeIterables
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import com.karumi.shot.ScreenshotTest
 import dagger.Module
@@ -65,27 +66,47 @@ class VisualAppTest : ScreenshotTest {
 
     private lateinit var device: UiDevice
 
+//    @Before
+//    fun beforeEachTest() {
+//        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+//        device.pressHome()
+//
+//        val launcherPackage = device.launcherPackageName
+//        device.wait(Until.hasObject(By.pkg(launcherPackage)), 5000)
+//    }
+//
+//    private fun waitForPackage(packageName: String) {
+//        val context = ApplicationProvider.getApplicationContext<Context>();
+//        val intent = context.packageManager.getLaunchIntentForPackage(packageName);
+//        context.startActivity(intent);
+//        device.wait(Until.hasObject(By.pkg(packageName)), 5000)
+//    }
+
     @Test
     fun testUseCase() {
-        Thread.sleep(1024)
-        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-
+        //waitForPackage("jp.co.yumemi.android.codecheck")
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "normal_state_search_screen")
         }
-        val searchInputText = device.findObject(
-            By.clazz("android.widget.EditText")
+        Thread.sleep(1024 * 6)
+        waitForView(ViewMatchers.withId(R.id.searchInputText)).perform(
+            ViewActions.replaceText("flutter"),
+            ViewActions.pressImeActionButton(),
         )
-        Thread.sleep(1024)
-        searchInputText.click()
-        searchInputText.text = "flutter"
-        device.pressEnter()
+//        val searchInputText = device.findObject(
+//            By.clazz("android.widget.EditText")
+//        )
+//        Thread.sleep(1024)
+//        searchInputText.click()
+//        searchInputText.text = "flutter"
+//        device.pressEnter()
         Thread.sleep(1024)
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "searching_state_search_screen")
         }
 
-        waitForView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
+        waitForView(ViewMatchers.withText("flutter/samples")).perform(scrollTo())
+            .perform(ViewActions.click())
         //onView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
         Thread.sleep(256)
         activityRule.scenario.onActivity {
