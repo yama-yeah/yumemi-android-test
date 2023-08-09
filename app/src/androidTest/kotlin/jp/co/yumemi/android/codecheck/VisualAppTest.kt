@@ -84,7 +84,6 @@ class VisualAppTest : ScreenshotTest {
 
     @Test
     fun testUseCase() {
-        //waitForPackage("jp.co.yumemi.android.codecheck")
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "normal_state_search_screen")
         }
@@ -93,13 +92,6 @@ class VisualAppTest : ScreenshotTest {
             ViewActions.replaceText("flutter"),
             ViewActions.pressImeActionButton(),
         )
-//        val searchInputText = device.findObject(
-//            By.clazz("android.widget.EditText")
-//        )
-//        Thread.sleep(1024)
-//        searchInputText.click()
-//        searchInputText.text = "flutter"
-//        device.pressEnter()
         Thread.sleep(1024)
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "searching_state_search_screen")
@@ -107,7 +99,6 @@ class VisualAppTest : ScreenshotTest {
 
         waitForView(ViewMatchers.withText("flutter/samples")).perform(scrollTo())
             .perform(ViewActions.click())
-        //onView(ViewMatchers.withText("flutter/samples")).perform(ViewActions.click())
         Thread.sleep(256)
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "normal_state_detail_screen")
