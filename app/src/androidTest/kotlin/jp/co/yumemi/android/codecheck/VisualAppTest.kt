@@ -63,28 +63,11 @@ class VisualAppTest : ScreenshotTest {
     var activityRule: ActivityScenarioRule<TopActivity> =
         ActivityScenarioRule(TopActivity::class.java)
 
-//    @Before
-//    fun beforeEachTest() {
-//        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-//        device.pressHome()
-//
-//        val launcherPackage = device.launcherPackageName
-//        device.wait(Until.hasObject(By.pkg(launcherPackage)), 5000)
-//    }
-//
-//    private fun waitForPackage(packageName: String) {
-//        val context = ApplicationProvider.getApplicationContext<Context>();
-//        val intent = context.packageManager.getLaunchIntentForPackage(packageName);
-//        context.startActivity(intent);
-//        device.wait(Until.hasObject(By.pkg(packageName)), 5000)
-//    }
-
     @Test
     fun testUseCase() {
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "normal_state_search_screen")
         }
-        Thread.sleep(1024 * 6)
         waitForView(ViewMatchers.withId(R.id.searchInputText)).perform(
             ViewActions.replaceText("flutter"),
             ViewActions.pressImeActionButton(),
@@ -96,7 +79,7 @@ class VisualAppTest : ScreenshotTest {
 
         waitForView(ViewMatchers.withText("flutter/flutter")).perform(scrollTo())
             .perform(ViewActions.click())
-        Thread.sleep(256)
+        Thread.sleep(4096)
         activityRule.scenario.onActivity {
             compareBitmap(it, name = "normal_state_detail_screen")
         }
